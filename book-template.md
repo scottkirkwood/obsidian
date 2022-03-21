@@ -6,7 +6,7 @@ rating: {{ .Rating }}
 average: {{ .Average }}
 pages: {{ .Pages }}
 date: {{ .DateRead }}
-tags: {{ .Tags }}
+{{if .Tags}}tags: {{ .Tags }}{{end}}
 ---
 
 # {{ .Title }}
@@ -21,7 +21,9 @@ By **{{ .Author }}**
 - Rating: {{ if .Rating }}{{ .Rating }} {{ end }}(average: {{ .Average }})
 - Published: {{ .Year }}
 - Pages: {{ .Pages }}
-- Date read: {{ .DateRead }}
+- Date read: {{ .DateRead }}{{if .Tags}}
+- Tags:  {{ .Tags }}
+{{end}}
 
 ## Review
 

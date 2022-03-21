@@ -64,6 +64,7 @@ func readFile(fname string) ([]*GoodReadCols, error) {
 
 func formatBook(t *template.Template, book *GoodReadCols) error {
 	fname := makeFilename(book.Title)
+	cleanupBook(book)
 	if err := makeDirs(fname); err != nil {
 		return err
 	}
@@ -99,6 +100,7 @@ func makeFilename(fname string) string {
 }
 
 func cleanupBook(book *GoodReadCols) {
+	book.Title = strings.ReplaceAll(book.Title, "#", `\#`)
 	book.ISBN = strings.Trim(book.ISBN[1:], `"`)
 	book.ISBN13 = strings.Trim(book.ISBN13[1:], `"`)
 	if book.Rating == "0" {
@@ -124,7 +126,6 @@ func formatBooks(books []*GoodReadCols) error {
 		return err
 	}
 	for _, book := range books {
-		cleanupBook(book)
 		if err := formatBook(t, book); err != nil {
 			return err
 		}
