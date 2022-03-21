@@ -43,6 +43,7 @@ type GoodReadCols struct {
 	Condition                string `csv:"Condition"`
 	ConditionDescription     string `csv:"Condition Description"`
 	BCID                     string `csv:"BCID"`
+	Tags                     string
 }
 
 var ()
@@ -100,9 +101,20 @@ func makeFilename(fname string) string {
 func cleanupBook(book *GoodReadCols) {
 	book.ISBN = strings.Trim(book.ISBN[1:], `"`)
 	book.ISBN13 = strings.Trim(book.ISBN13[1:], `"`)
+	if book.Rating == "0" {
+		book.Rating = ""
+	}
 	if book.DateRead == "" {
 		book.DateRead = book.DateAdded
 	}
+	tags := []string{}
+	for _, bookshelf := range strings.Split(book.Bookshelves, ",") {
+		tag := strings.TrimSpace(bookshelf)
+		if tag != "" {
+			tags = append(tags, "#"+tag)
+		}
+	}
+	book.Tags = strings.Join(tags, " ")
 	book.DateRead = strings.Replace(book.DateRead, "/", "-", -1)
 }
 
