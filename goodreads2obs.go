@@ -94,7 +94,7 @@ func makeFilename(fname string) string {
 		}
 		return r
 	}, fname)
-	return "books/" + fname + ".mod"
+	return "books/" + fname + ".md"
 }
 
 func cleanupBook(book *GoodReadCols) {
