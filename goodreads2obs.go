@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -61,18 +62,39 @@ func readFile(fname string) ([]*GoodReadCols, error) {
 }
 
 func formatBook(t *template.Template, book *GoodReadCols) error {
-	fname := book.Title
-	idx := strings.Index(fname, ": ")
-	if idx > 10 {
-		fname = fname[:idx]
+	fname := makeFilename(book.Title)
+	if err := makeDirs(fname); err != nil {
+		return err
 	}
-	fname = "books/" + fname + ".mod"
 	f, err := os.Create(fname)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
-        return t.Execute(f, book)
+	return t.Execute(f, book)
+}
+
+func makeDirs(fname string) error {
+	dir := filepath.Dir(fname)
+	if _, err := os.Stat(dir); !os.IsNotExist(err) {
+		return nil
+	}
+	return os.MkdirAll(dir, 0755)
+}
+
+func makeFilename(fname string) string {
+	idx := strings.Index(fname, ": ")
+	if idx > 10 {
+		fname = fname[:idx]
+	}
+	fname = strings.Map(func(r rune) rune {
+		switch r {
+		case '/', '\\', '*', '|', '"', '<', '>', '=':
+			return '-'
+		}
+		return r
+	}, fname)
+	return "books/" + fname + ".mod"
 }
 
 func cleanupBook(book *GoodReadCols) {
