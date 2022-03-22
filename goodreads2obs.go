@@ -109,14 +109,14 @@ func cleanupBook(book *GoodReadCols) {
 	if book.DateRead == "" {
 		book.DateRead = book.DateAdded
 	}
-	tags := []string{}
+	tags := []string{"book"}
 	for _, bookshelf := range strings.Split(book.Bookshelves, ",") {
 		tag := strings.TrimSpace(bookshelf)
 		if tag != "" {
-			tags = append(tags, "#"+tag)
+			tags = append(tags, tag)
 		}
 	}
-	book.Tags = strings.Join(tags, " ")
+	book.Tags = strings.Join(tags, ", ")
 	book.DateRead = strings.Replace(book.DateRead, "/", "-", -1)
 }
 
