@@ -1,2 +1,4 @@
 github.com/gocarina/gocsv v0.0.0-20220310154401-d4df709ca055 h1:UfcDMw41lSx3XM7UvD1i7Fsu3rMgD55OU5LYwLoR/Yk=
 github.com/gocarina/gocsv v0.0.0-20220310154401-d4df709ca055/go.mod h1:5YoVOkjYAQumqlV356Hj3xeYh4BdZuLE0/nRkf2NKkI=
+github.com/medium/medium-sdk-go v0.0.0-20171230201202-4daca056cf6a h1:jn+HbmhKQSAgFsGpu9iibNrDeR0OynqsFoRiUm4GbiE=
+github.com/medium/medium-sdk-go v0.0.0-20171230201202-4daca056cf6a/go.mod h1:JaeZKoJYjUkYoOMt1JpsFMkg1llRgfzqVfQVAaMOTLA=
