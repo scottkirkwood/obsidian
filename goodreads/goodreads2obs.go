@@ -172,7 +172,7 @@ func makeYamlTags(book *GoodReadCols) string {
 	keyOrder := []string{
 		"short_title", "title", "author", "isbn", "date_read", "average", "tags",
 	}
-	return strings.Join(toKeyValues(m, keyOrder), "\n")
+	return strings.Join(kvToLines(m, keyOrder), "\n")
 }
 
 // kvToLines takes a string-string maps and makes it a key: value
@@ -184,7 +184,7 @@ func kvToLines(kv map[string]string, keys []string) []string {
 		if val == "" {
 			continue
 		}
-		lines = append(lines, fmt.Sprintf("%s :%s", key, maybeQuote(val)))
+		lines = append(lines, fmt.Sprintf("%s: %s", key, maybeQuote(val)))
 	}
 	return lines
 }
@@ -242,6 +242,9 @@ func (c *Conf) LookupExisting() error {
 			continue
 		}
 		isbn := getISBNOrEquivalent(fields, filepath.Base(fname))
+		if c.existing[isbn] != "" {
+			return fmt.Errorf("duplicate isbn %s", isbn)
+		}
 		c.existing[isbn] = fname
 	}
 	return nil
@@ -383,7 +386,7 @@ func (m moveFiles) DeleteTempfiles() error {
 func (m moveFiles) MoveTempFiles() error {
 	for _, mf := range m {
 		if mf.toFile != "" && !mf.different {
-			fmt.Printf("mv %q %q", mf.fromFile, mf.toFile)
+			fmt.Printf("mv %q %q\n", mf.fromFile, mf.toFile)
 			if err := os.Rename(mf.fromFile, mf.toFile); err != nil {
 				err = crossDeviceMove(mf.fromFile, mf.toFile)
 				if err != nil {

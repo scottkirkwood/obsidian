@@ -1,12 +1,5 @@
 ---
-title: "{{ .Title }}, {{ .Author }}"
-{{if .ISBN}}
-isbn: {{ .ISBN }}
-{{ end }}{{if .Rating }}rating: {{ .Rating }}
-{{ end }}
-average: {{ .Average }}
-date: {{ .DateRead }}
-{{if .Tags}}tags: [{{ .Tags }}]{{end}}
+{{.YamlTags}}
 ---
 
 # {{ .Title }}
