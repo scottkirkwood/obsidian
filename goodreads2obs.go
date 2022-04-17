@@ -134,7 +134,7 @@ func (c *Conf) makeTempFilename(fname string) string {
 	}
 	fname = strings.Map(func(r rune) rune {
 		switch r {
-		case '/', '\\', '*', '|', '"', '<', '>', '=':
+		case '/', '\\', '*', '|', '"', '<', '>', '=', '—':
 			return '-'
 		}
 		return r
@@ -335,6 +335,7 @@ func (m moveFiles) DeleteTempfiles() error {
 func (m moveFiles) MoveTempFiles() error {
 	for _, mf := range m {
 		if mf.toFile != "" && !mf.different {
+			fmt.Printf("mv %q %q", mf.fromFile, mf.toFile)
 			if err := os.Rename(mf.fromFile, mf.toFile); err != nil {
 				err = crossDeviceMove(mf.fromFile, mf.toFile)
 				if err != nil {

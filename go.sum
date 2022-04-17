@@ -1,4 +1,6 @@
 github.com/gocarina/gocsv v0.0.0-20220310154401-d4df709ca055 h1:UfcDMw41lSx3XM7UvD1i7Fsu3rMgD55OU5LYwLoR/Yk=
 github.com/gocarina/gocsv v0.0.0-20220310154401-d4df709ca055/go.mod h1:5YoVOkjYAQumqlV356Hj3xeYh4BdZuLE0/nRkf2NKkI=
-github.com/medium/medium-sdk-go v0.0.0-20171230201202-4daca056cf6a h1:jn+HbmhKQSAgFsGpu9iibNrDeR0OynqsFoRiUm4GbiE=
-github.com/medium/medium-sdk-go v0.0.0-20171230201202-4daca056cf6a/go.mod h1:JaeZKoJYjUkYoOMt1JpsFMkg1llRgfzqVfQVAaMOTLA=
+github.com/hermanschaaf/prettyprint v0.0.0-20151019092546-de00933accbc h1:apM7oQ/juw7MnmwRt2VnNVNaJshu/BDPlf0oxYNhfc8=
+github.com/hermanschaaf/prettyprint v0.0.0-20151019092546-de00933accbc/go.mod h1:ikK4ubbDyo7AJQ19JMJMtCazx4YE05ekila214o5CGY=
+golang.org/x/net v0.0.0-20220412020605-290c469a71a5 h1:bRb386wvrE+oBNdF1d/Xh9mQrfQ4ecYhW5qJ5GvTGT4=
+golang.org/x/net v0.0.0-20220412020605-290c469a71a5/go.mod h1:CfG3xpIq0wQ8r1q4Su4UZFWDARRcnwPjda9FqA0JpMk=
