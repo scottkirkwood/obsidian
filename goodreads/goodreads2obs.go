@@ -86,7 +86,9 @@ type GoodReadCols struct {
 	Condition                string `csv:"Condition"`
 	ConditionDescription     string `csv:"Condition Description"`
 	BCID                     string `csv:"BCID"`
-	Tags                     string
+
+	Tags     string
+	YamlTags string
 }
 
 func (c *Conf) ReadCSV() ([]*GoodReadCols, error) {
@@ -115,6 +117,7 @@ func (c *Conf) writeBook(t *template.Template, book *GoodReadCols) error {
 		return err
 	}
 	defer f.Close()
+
 	return t.Execute(f, book)
 }
 
@@ -152,6 +155,41 @@ func cleanupBook(book *GoodReadCols) {
 	if book.DateRead == "" {
 		book.DateRead = book.DateAdded
 	}
+	book.DateRead = strings.Replace(book.DateRead, "/", "-", -1)
+
+	book.YamlTags = makeYamlTags(book)
+}
+
+func makeYamlTags(book *GoodReadCols) string {
+	m := map[string]string{}
+	m["short_title"] = shortTitle(book.Title)
+	m["title"] = book.Title
+	m["author"] = book.AuthorLF
+	m["isbn"] = book.ISBN
+	m["date_read"] = book.DateRead
+	m["average"] = book.Average
+	m["tags"] = strings.Join(makeTags(book), ", ")
+	keyOrder := []string{
+		"short_title", "title", "author", "isbn", "date_read", "average", "tags",
+	}
+	return strings.Join(toKeyValues(m, keyOrder), "\n")
+}
+
+// kvToLines takes a string-string maps and makes it a key: value
+// It skips empty values and
+func kvToLines(kv map[string]string, keys []string) []string {
+	lines := make([]string, 0, len(kv))
+	for _, key := range keys {
+		val := kv[key]
+		if val == "" {
+			continue
+		}
+		lines = append(lines, fmt.Sprintf("%s :%s", key, maybeQuote(val)))
+	}
+	return lines
+}
+
+func makeTags(book *GoodReadCols) []string {
 	tags := []string{"book"}
 	for _, bookshelf := range strings.Split(book.Bookshelves, ",") {
 		tag := strings.TrimSpace(bookshelf)
@@ -159,8 +197,18 @@ func cleanupBook(book *GoodReadCols) {
 			tags = append(tags, tag)
 		}
 	}
-	book.Tags = strings.Join(tags, ", ")
-	book.DateRead = strings.Replace(book.DateRead, "/", "-", -1)
+	return tags
+}
+
+func maybeQuote(val string) string {
+	if strings.ContainsAny(val, `':`) {
+		return fmt.Sprintf("%q", val)
+	}
+	return val
+}
+
+func shortTitle(title string) string {
+	return strings.Split(title, ":")[0]
 }
 
 func (c *Conf) WriteBooks() error {
